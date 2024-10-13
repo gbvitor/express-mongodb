@@ -3,7 +3,6 @@ const LivroSchema = new mongoose.Schema(
     {
         id: {
             type: mongoose.Schema.Types.ObjectId,
-            required: true,
         },
         titulo: {
             type: String,

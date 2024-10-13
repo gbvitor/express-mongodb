@@ -1,5 +1,9 @@
 import express from "express";
 import connectDatabase from "./config/connectDatabase.js";
+import routes from "./routes/index.js";
+
+const app = express();
+routes(app);
 
 const conexão = await connectDatabase();
 conexão.on("error", (error) => {
@@ -9,8 +13,5 @@ conexão.on("error", (error) => {
 conexão.once("open", () => {
     console.log("Conectado ao MongoDB");
 });
-
-const app = express();
-app.use(express.json());
 
 export default app;

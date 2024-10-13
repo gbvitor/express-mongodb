@@ -1,29 +1,42 @@
-import livro from "../models/Livro";
+import livro from "../models/Livro.js";
 
 class LivroController {
     static async getAllLivros(req, res) {
-        const livros = await livro.find({});
-        res.json(livros);
+        try {
+            const listaLivros = await livro.find({});
+            res.status(200).json(listaLivros);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 
     static async getLivroById(req, res) {
-        const { id } = req.params;
-        const livro = await livro.findById(id);
-        res.json(livro);
+        try {
+            const { id } = req.params;
+            const livroId = await livro.findById(id);
+            res.status(200).json(livroId);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 
     static async createLivro(req, res) {
-        const livro = new livro(req.body);
-        await livro.save();
-        res.json({ message: "Livro criado com sucesso!" });
+        try {
+            const NovoLivro = await livro.create(req.body);
+            res.status(201).json(NovoLivro);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 
     static async updateLivro(req, res) {
-        const { id } = req.params;
-        const livro = await livro.findById(id);
-        Object.assign(livro, req.body);
-        await livro.save();
-        res.json({ message: "Livro atualizado com sucesso!" });
+        try {
+            const { id } = req.params;
+            await livro.findByIdAndUpdate(id, req.body);
+            res.status(200).json({ message: "Livro atualizado com sucesso!" });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 
     static async deleteLivro(req, res) {
